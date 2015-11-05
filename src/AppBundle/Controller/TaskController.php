@@ -9,6 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Task;
 
+/**
+ * Class TaskController
+ * @package AppBundle\Controller
+ * @Route("/task")
+ */
 class TaskController extends Controller
 {
     /**
@@ -47,10 +52,10 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/addFormTask")
+     * @Route("/add")
      * @Template()
      */
-    public function addFormTaskAction()
+    public function addAction()
     {
         $task = new Task();
         $form = $this->createFormBuilder($task)
