@@ -38,9 +38,12 @@ class CategoryController extends Controller
             ->add("save", "submit", array("label" => "New Category"))
             ->getForm();
         $form->handleRequest($request);
-
+        $validator = $this->get("validator");
+        $errors = $validator->validate($category);
         if (!$form->isValid()) {
-            //throw error
+            return $this->render("AppBundle:Category:addFormCategory.html.twig",
+                                    array("errors" => $errors, "form" =>$form->createView())
+                                  );
         }
         $em = $this->getDoctrine()->getManager();
         $em->persist($category);
