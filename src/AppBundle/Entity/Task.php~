@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -168,22 +167,14 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
-     * @ORM\JoinColumn(name="blanbla_id", referencedColumnName="id")
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comments", mappedBy="task")
+     * Set category
+     * @param \AppBundle\Entity\Category $category
+     * @return Task
      */
-    private $comments;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
 
     /**
      * Set category
