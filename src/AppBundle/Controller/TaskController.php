@@ -42,8 +42,12 @@ class TaskController extends Controller
             ->getForm();
 
         $form->handleRequest($request);
+        $validator = $this->get("validator");
+        $errors = $validator->validate($task);
         if (!$form->isValid()) {
-            // throw error
+            return $this->render("AppBundle:Task:add.html.twig",
+                array("errors" => $errors, "form" =>$form->createView())
+            );
         }
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);

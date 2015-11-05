@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Task
@@ -25,6 +26,8 @@ class Task
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=80)
+     * @Assert\Length(max=80,
+     *              maxMessage = "Name of task is too long")
      */
     private $name;
 
@@ -32,6 +35,8 @@ class Task
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\Length(max=255,
+     *              maxMessage = "Description of task is too long")
      */
     private $description;
 
@@ -46,6 +51,10 @@ class Task
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer")
+     * @Assert\Range(min=0, max=10,
+     *              minMessage = "Priority can't be less than 0",
+     *              maxMessage = "priority can't be more than 10"
+     *              )
      */
     private $priority;
 
