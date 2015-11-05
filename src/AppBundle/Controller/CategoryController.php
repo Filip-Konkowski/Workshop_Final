@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CategoryController
@@ -28,20 +30,36 @@ class CategoryController extends Controller
      * @Route("/addCategory")
      * @Method("POST")
      */
-    public function addCategoryAction()
+    public function addCategoryAction(Request $request)
     {
-        return array(// ...
-        );
+        $category = new Category();
+        $form = $this->createFormBuilder($category)
+            ->add("name", "text", array("label" => "Name for category"))
+            ->add("save", "submit", array("label" => "New Category"))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if (!$form->isValid()) {
+            //throw error
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($category);
+        $em->flush();
+        return $this->redirectToRoute("app_category_viewcategorieslist");
     }
 
     /**
-     * @Route("/addFormCategory")
+     * @Route("/add")
      * @Template()
      */
     public function addFormCategoryAction()
     {
-        return array(// ...
-        );
+        $category = new Category();
+        $form = $this->createFormBuilder($category)
+                    ->add("name", "text", array("label" => "Name for category"))
+                    ->add("save", "submit", array("label" => "New Category"))
+                    ->getForm();
+        return array("form" => $form->createView());
     }
 
     /**

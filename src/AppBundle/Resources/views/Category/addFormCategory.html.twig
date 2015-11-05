@@ -4,4 +4,9 @@
 
 {% block body %}
 <h1>Welcome to the Category:addFormCategory page</h1>
+    <div class="container">
+        {{ form_start(form, {action: path("app_category_addcategory"), method: "POST"}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
