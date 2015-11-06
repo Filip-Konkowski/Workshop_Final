@@ -167,8 +167,14 @@ class Task
     }
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="tasks")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
-     * @ORM\JoinColumn(name="blanbla_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
 
@@ -207,5 +213,63 @@ class Task
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comments $comment
+     *
+     * @return Task
+     */
+    public function addComment(\AppBundle\Entity\Comments $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comments $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comments $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Task
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

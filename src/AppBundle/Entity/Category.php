@@ -3,12 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Category
  *
- * @ORM\Table()
+ * @ORM\Table(name="category",
+ *              uniqueConstraints={@ORM\UniqueConstraint(name="category",
+ *                                                   columns={"user_id", "name"}
+ *                                  )})
  * @ORM\Entity(repositoryClass="AppBundle\Entity\CategoryRepository")
  */
 class Category
@@ -73,6 +79,12 @@ class Category
     private $tasks;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -110,5 +122,29 @@ class Category
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Category
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
