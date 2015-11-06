@@ -10,4 +10,13 @@ namespace AppBundle\Entity;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByUser($user) {
+        return $this->findBy(array("user" => $user), array("name" => "desc"));
+    }
+
+    public function findByCategory($category) {
+//        return$this->findBy(array());
+    }
+
+
 }

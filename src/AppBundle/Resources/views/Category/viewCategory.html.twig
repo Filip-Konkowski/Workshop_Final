@@ -1,0 +1,16 @@
+
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Category:viewCategoriey{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the Category: {{ category.name }}</h1>
+    <a href="{{ path("app_task_add", {"categoryId":category.id}) }}" class="btn btn-default list-group-item">Add Task</a>
+{#iteracja po taskach kategorii category.tasks bedzie wywolywac category->getTasks #}
+    {% for task in category.tasks %}
+        name of task: {{ task.name }} <br>
+    {% endfor %}
+
+
+{% endblock %}
+

@@ -3,5 +3,12 @@
 {% block title %}AppBundle:Category:viewCategoriesList{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Category:viewCategoriesList page</h1>
+    <h1>Welcome to the Category:viewCategoriesList page</h1>
+    <div class="list-group">
+        {% for category in categories %}
+            <li>
+                <a href="{{ path("app_category_viewcategory", {"id": category.id}) }}" class="btn btn-default list-group-item">{{ category.name }}</a>
+            </li>
+        {% endfor %}
+    </div>
 {% endblock %}

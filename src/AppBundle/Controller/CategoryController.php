@@ -17,13 +17,26 @@ use Symfony\Component\HttpFoundation\Request;
 class CategoryController extends Controller
 {
     /**
+     * @Route("/viewCategory/{id}")
+     * @Template()
+     */
+    public function viewCategoryAction($id)
+    {
+        $category = $this->getDoctrine()->getRepository("AppBundle:Category")->find($id);
+//        $allTasksOfUser = $this->getDoctrine()->getRepository("AppBundle:Category")->findByCategory();
+        return array("category" => $category,
+        );
+    }
+
+    /**
      * @Route("/viewCategoriesList")
      * @Template()
      */
     public function viewCategoriesListAction()
     {
-        return array(// ...
-        );
+        $categoriesList = $this->getDoctrine()->getRepository("AppBundle:Category")->findByUser($this->getUser());
+
+        return array("categories" => $categoriesList);
     }
 
     /**
@@ -42,9 +55,10 @@ class CategoryController extends Controller
         $errors = $validator->validate($category);
         if (!$form->isValid()) {
             return $this->render("AppBundle:Category:addFormCategory.html.twig",
-                                    array("errors" => $errors, "form" =>$form->createView())
-                                  );
+                array("errors" => $errors, "form" => $form->createView())
+            );
         }
+        $category->setUser($this->getUser());
         $em = $this->getDoctrine()->getManager();
         $em->persist($category);
         $em->flush();
@@ -59,9 +73,9 @@ class CategoryController extends Controller
     {
         $category = new Category();
         $form = $this->createFormBuilder($category)
-                    ->add("name", "text", array("label" => "Name for category"))
-                    ->add("save", "submit", array("label" => "New Category"))
-                    ->getForm();
+            ->add("name", "text", array("label" => "Name for category"))
+            ->add("save", "submit", array("label" => "New Category"))
+            ->getForm();
         return array("form" => $form->createView());
     }
 
