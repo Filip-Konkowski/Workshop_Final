@@ -1,0 +1,11 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Category:viewTask{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the Category:viewTask page</h1>
+    Category name:
+    <div class="list-group">
+        <li class="list-group-item">Task name: {{ task.name }}</li>
+    </div>
+{% endblock %}

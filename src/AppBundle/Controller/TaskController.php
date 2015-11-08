@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -27,6 +28,16 @@ class TaskController extends Controller
     }
 
     /**
+     * @Route("/viewTask/{taskId}", name="app_task_view_one")
+     * @Template()
+     */
+    public function viewTaskAction($taskId)
+    {
+        $task = $this->getDoctrine()->getRepository("AppBundle:Task")->find($taskId);
+        return array("task" => $task);
+    }
+
+    /**
      * @Route("/addTask")
      * @Method("POST")
      */
@@ -38,10 +49,19 @@ class TaskController extends Controller
             ->add("description", "textarea")
             ->add("deadline", "date")
             ->add("priority", "number")
+            ->add("categoryId", "hidden")
+//            ->add("category", "entity", array(
+//                                            "class" => "AppBundle:Category",
+//                                            "choice_label" =>"name",
+//                                            ))
             ->add("save", "submit", array("label" => "New Task"))
             ->getForm();
 
+
+
         $form->handleRequest($request);
+        $task->setCategory($this->getDoctrine()->getRepository("AppBundle:Category")->find($task->getCategoryId()));
+
         $validator = $this->get("validator");
         $errors = $validator->validate($task);
         if (!$form->isValid()) {
@@ -49,6 +69,10 @@ class TaskController extends Controller
                 array("errors" => $errors, "form" =>$form->createView())
             );
         }
+        $task->setUser($this->getUser());
+
+//        echo ->getId(); exit;
+        $task->setCategory($task->getCategory());
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
@@ -56,10 +80,10 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/add")
+     * @Route("/add/{categoryId}")
      * @Template()
      */
-    public function addAction()
+    public function addAction($categoryId)
     {
         $task = new Task();
         $form = $this->createFormBuilder($task)
@@ -67,8 +91,14 @@ class TaskController extends Controller
             ->add("description", "textarea")
             ->add("deadline", "date")
             ->add("priority", "number")
+//            ->add("category", "entity", array(
+//                "class" => "AppBundle:Category",
+//                "choice_label" =>"name",
+//            ))
+            ->add("categoryId", "hidden", array("data" => $categoryId))
             ->add("save", "submit", array("label" => "New Task"))
             ->getForm();
+
 
         return array("form" => $form->createView());
     }
