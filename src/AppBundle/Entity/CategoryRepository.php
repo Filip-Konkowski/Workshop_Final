@@ -14,9 +14,4 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         return $this->findBy(array("user" => $user), array("name" => "desc"));
     }
 
-    public function findByCategory($category) {
-//        return$this->findBy(array());
-    }
-
-
 }
