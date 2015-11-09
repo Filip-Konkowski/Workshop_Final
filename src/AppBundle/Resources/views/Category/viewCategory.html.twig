@@ -6,11 +6,32 @@
 {% block body %}
     <h1>Welcome to the Category: {{ category.name }}</h1>
     <a href="{{ path("app_task_add", {"categoryId":category.id}) }}" class="btn btn-default list-group-item">Add Task</a>
-{#iteracja po taskach kategorii category.tasks bedzie wywolywac category->getTasks #}
-    {% for task in category.tasks %}
-        name of task: {{ task.name }} <br>
-    {% endfor %}
+    <div class="container">
+        <div class="list-group" >
+        {#iteracja po taskach kategorii category.tasks bedzie wywolywac category->getTasks #}
+        {% for task in category.tasks %}
+            <div class="row">
+                <div class="col-md-8">
+                    <li class="list-group-item">
+                        Name of task: {{ task.name }} <br>
+                        TO DO: {{ task.description }} <br>
+                        Deadline: {{ task.deadline|date("Y-m-d") }} <br>
+                        Priority: {{ task.priority }}
+                    </li>
+                </div>
+                <div class="col-md-2" id="btnCategoryPosition">
+                    <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_editformtask", {"categoryId":category.id, "taskId":task.id}) }}">
+                        Edit
+                    </a>
+                </div>
+                <div class="col-md-2" id="btnCategoryPosition">
+                    <a class="btn btn-block btn-danger" id="buttonCategory" href="{{ path("app_task_delete", {"taskId":task.id}) }}">
+                        Delete
+                    </a>
+                </div>
 
-
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
-
