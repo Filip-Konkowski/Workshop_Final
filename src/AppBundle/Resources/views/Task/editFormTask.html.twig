@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Task:editTask{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Task:editTask page</h1>
+    <div class="container">
+        {#{% if errors is defined %}#}
+            {#{% for error in errors %}#}
+                {#Error: {{ error.message }} <br>#}
+            {#{% endfor %}#}
+        {#{% endif %}#}
+        {{ form_start(form, {action: path("app_task_updatetask", {"categoryId":category.id, "taskId":taskId}), method: "POST"}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
