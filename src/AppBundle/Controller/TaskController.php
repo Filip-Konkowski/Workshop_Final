@@ -148,4 +148,20 @@ class TaskController extends Controller
         return $this->redirectToRoute("app_category_viewcategorieslist");
     }
 
+    /**
+     * @Route("/todo/{taskId}", name="app_task_todotask")
+     * @Method("GET")
+     */
+
+    public function todoTask($taskId) {
+
+        $task = $this->getDoctrine()->getRepository("AppBundle:Task")->find($taskId);
+
+        $task->setStatus(Task::STATUS_TODO);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($task);
+        $em->flush();
+        return $this->redirectToRoute("app_category_viewcategorieslist");
+    }
 }

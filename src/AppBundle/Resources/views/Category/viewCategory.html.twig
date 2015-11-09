@@ -11,7 +11,7 @@
         {#iteracja po taskach kategorii category.tasks bedzie wywolywac category->getTasks #}
         {% for task in category.tasks %}
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <li class="list-group-item">
                         Name of task: {{ task.name }} <br>
                         TO DO: {{ task.description }} <br>
@@ -19,18 +19,25 @@
                         Priority: {{ task.priority }}
                     </li>
                 </div>
-                <div class="col-md-2" id="btnCategoryPosition">
-                    <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_donetask", {"taskId":task.id}) }}">
-                        Done
-                    </a>
-                </div>
-                </div>
+                {% if task.status is constant("STATUS_TODO", task) %}
+                    <div class="col-md-2" id="btnCategoryPosition">
+                        <a class="btn btn-block btn-success" id="buttonCategory" href="{{ path("app_task_donetask", {"taskId":task.id}) }}">
+                            Done
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-md-2" id="btnCategoryPosition">
+                        <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_todotask", {"taskId":task.id}) }}">
+                            Change on todo
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="col-md-1" id="btnCategoryPosition">
                     <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_editformtask", {"categoryId":category.id, "taskId":task.id}) }}">
                         Edit
                     </a>
                 </div>
-                <div class="col-md-1" id="btnCategoryPosition">
+                <div class="col-md-2" id="btnCategoryPosition">
                     <a class="btn btn-block btn-danger" id="buttonCategory" href="{{ path("app_task_delete", {"taskId":task.id}) }}">
                         Delete
                     </a>
