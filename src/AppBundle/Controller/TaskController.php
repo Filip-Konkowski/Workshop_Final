@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Form\Type\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -44,23 +45,10 @@ class TaskController extends Controller
     public function addTaskAction(Request $request)
     {
         $task = new Task();
-        $form = $this->createFormBuilder($task)
-            ->add("name", "text")
-            ->add("description", "textarea")
-            ->add("deadline", "date")
-            ->add("priority", "number")
-            ->add("categoryId", "hidden")
-//            ->add("category", "entity", array(
-//                                            "class" => "AppBundle:Category",
-//                                            "choice_label" =>"name",
-//                                            ))
-            ->add("save", "submit", array("label" => "New Task"))
-            ->getForm();
-
-
+        $manager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new TaskType($manager), $task);
 
         $form->handleRequest($request);
-        $task->setCategory($this->getDoctrine()->getRepository("AppBundle:Category")->find($task->getCategoryId()));
 
         $validator = $this->get("validator");
         $errors = $validator->validate($task);
@@ -70,8 +58,6 @@ class TaskController extends Controller
             );
         }
         $task->setUser($this->getUser());
-
-//        echo ->getId(); exit;
         $task->setCategory($task->getCategory());
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
@@ -86,41 +72,69 @@ class TaskController extends Controller
     public function addAction($categoryId)
     {
         $task = new Task();
-        $form = $this->createFormBuilder($task)
+        $category =  $this->getDoctrine()->getRepository("AppBundle:Category")->find($categoryId);
+        $task->setCategory($category);
+        $manager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new TaskType($manager), $task);
+
+        return array("form" => $form->createView() );
+    }
+
+    /**
+     * @Route("/delete/{taskId}")
+     * @Template()
+     */
+    public function deleteAction($taskId)
+    {
+        $delTask = $this->getDoctrine()->getRepository("AppBundle:Task")->find($taskId);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($delTask);
+        $em->flush();
+        return $this->redirectToRoute("");
+    }
+
+    /**
+     * @Route("/editFormTask/{categoryId}")
+     *
+     */
+    public function editFormTaskAction(Request $request, $categoryId)
+    {
+        $editTask = $this->getDoctrine()->getRepository("AppBundle:Task")->find($categoryId);
+
+        $form = $this->createFormBuilder($editTask)
             ->add("name", "text")
             ->add("description", "textarea")
             ->add("deadline", "date")
             ->add("priority", "number")
-//            ->add("category", "entity", array(
-//                "class" => "AppBundle:Category",
-//                "choice_label" =>"name",
-//            ))
             ->add("categoryId", "hidden", array("data" => $categoryId))
             ->add("save", "submit", array("label" => "New Task"))
             ->getForm();
 
-
-        return array("form" => $form->createView());
+        return $this->render("AppBundle:Task:editFormTask.html.twig", array("form" => $form->createView(),
+                    "categoryId" => $categoryId,
+                    ));
     }
 
     /**
-     * @Route("/delete")
-     * @Template()
+     * @Route("/updateTask/{categoryId}")
+     * @Method("POST")
      */
-    public function deleteAction()
+    public function updateTaskAction(Request $request, $categoryId)
     {
-        return array(// ...
-        );
-    }
+        $editTask = $this->getDoctrine()->getRepository("AppBundle:Task")->find($categoryId);
 
-    /**
-     * @Route("/editTask")
-     * @Template()
-     */
-    public function editTaskAction()
-    {
-        return array(// ...
-        );
+        $form = $this->createFormBuilder($editTask)
+            ->add("name", "text")
+            ->add("description", "textarea")
+            ->add("deadline", "date")
+            ->add("priority", "number")
+            ->add("categoryId", "hidden", array("data" => $categoryId))
+            ->add("save", "submit", array("label" => "New Task"))
+            ->getForm();
+
+        $form->handleRequest($request);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("app_category_viewcategorieslist");
     }
 
 }
