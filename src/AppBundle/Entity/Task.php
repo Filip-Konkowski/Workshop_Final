@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task
 {
+    const STATUS_TODO = 1;
+    const STATUS_DONE = 2;
+
     /**
      * @var integer
      *
@@ -59,6 +62,12 @@ class Task
      */
     private $priority;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
 
     /**
      * Get id
@@ -167,6 +176,30 @@ class Task
     }
 
     /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return Task
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tasks")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -177,6 +210,7 @@ class Task
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
+    private $categoryId;
 
     /**
      * @ORM\OneToMany(targetEntity="Comments", mappedBy="task")
@@ -213,6 +247,23 @@ class Task
     public function getCategory()
     {
         return $this->category;
+    }
+
+    public function setCategoryId($categoryId = null)
+    {
+        $this->categoryId = $categoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
     }
 
     /**
@@ -271,5 +322,14 @@ class Task
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setIsDone()
+    {
+        $this->status = self::STATUS_DONE;
+        return $this;
     }
 }

@@ -20,11 +20,17 @@
                     </li>
                 </div>
                 <div class="col-md-2" id="btnCategoryPosition">
+                    <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_donetask", {"taskId":task.id}) }}">
+                        Done
+                    </a>
+                </div>
+                </div>
+                <div class="col-md-1" id="btnCategoryPosition">
                     <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_task_editformtask", {"categoryId":category.id, "taskId":task.id}) }}">
                         Edit
                     </a>
                 </div>
-                <div class="col-md-2" id="btnCategoryPosition">
+                <div class="col-md-1" id="btnCategoryPosition">
                     <a class="btn btn-block btn-danger" id="buttonCategory" href="{{ path("app_task_delete", {"taskId":task.id}) }}">
                         Delete
                     </a>

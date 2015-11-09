@@ -60,6 +60,7 @@ class TaskController extends Controller
         }
         $task->setUser($this->getUser());
         $task->setCategory($task->getCategory());
+        $task->setStatus(Task::STATUS_TODO);
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
@@ -91,7 +92,7 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($delTask);
         $em->flush();
-        return $this->redirectToRoute("");
+        return $this->redirectToRoute("app_category_viewcategorieslist");
     }
 
     /**
@@ -128,6 +129,22 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
         $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("app_category_viewcategorieslist");
+    }
+
+    /**
+     * @Route("/done/{taskId}", name="app_task_donetask")
+     * @Method("GET")
+     */
+
+    public function doneTask($taskId) {
+
+        $task = $this->getDoctrine()->getRepository("AppBundle:Task")->find($taskId);
+
+        $task->setStatus(Task::STATUS_DONE);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($task);
+        $em->flush();
         return $this->redirectToRoute("app_category_viewcategorieslist");
     }
 
