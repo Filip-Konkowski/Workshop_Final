@@ -1,0 +1,12 @@
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#buttonCategory {
+    padding: 10px;
+}
+
+#btnCategoryPosition {
+    position: relative;
+    padding: 1.5em;
+}
