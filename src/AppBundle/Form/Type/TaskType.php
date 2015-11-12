@@ -37,7 +37,7 @@ class TaskType extends AbstractType
             ->add("deadline", "date")
             ->add("priority", "number")
             ->add("category", "hidden")
-            ->add("save", "submit", array("label" => "New Task"))
+
         ;
         $builder->get('category')
             ->addModelTransformer(new CategoryToNumberTransformer($this->manager));
