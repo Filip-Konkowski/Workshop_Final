@@ -10,7 +10,7 @@
                 Error: {{ error.message }} <br>
             {% endfor %}
         {% endif %}
-        {{ form_start(form, {action: path("app_task_addtask"), method: "POST"}) }}
+        {{ form_start(form, {action: path("app_task_addtask", {"categoryId":categoryId}), method: "POST"}) }}
         {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>

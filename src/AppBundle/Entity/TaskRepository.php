@@ -10,4 +10,5 @@ namespace AppBundle\Entity;
  */
 class TaskRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

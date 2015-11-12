@@ -18,15 +18,7 @@ use AppBundle\Entity\Task;
  */
 class TaskController extends Controller
 {
-    /**
-     * @Route("/viewTaskList", name="app_task_view_all")
-     * @Template()
-     */
-    public function viewTaskListAction()
-    {
-        return array(// ...
-        );
-    }
+
 
     /**
      * @Route("/viewTask/{taskId}", name="app_task_view_one")
@@ -39,14 +31,15 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/addTask")
+     * @Route("/addTask/{categoryId}")
      * @Method("POST")
      */
-    public function addTaskAction(Request $request)
+    public function addTaskAction(Request $request, $categoryId)
     {
         $task = new Task();
         $manager = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new TaskType($manager), $task);
+        $form = $this->createForm(new TaskType($manager), $task)
+                    ->add("save", "submit", array("label" => "New Task"));
 
         $form->handleRequest($request);
 
@@ -64,7 +57,8 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
-        return $this->redirectToRoute("app_category_viewcategorieslist");
+//        return $this->redirectToRoute("app_category_viewcategorieslist");
+        return $this->redirectToRoute("app_category_viewcategory", array("id" => $categoryId));
     }
 
     /**
@@ -77,9 +71,10 @@ class TaskController extends Controller
         $category =  $this->getDoctrine()->getRepository("AppBundle:Category")->find($categoryId);
         $task->setCategory($category);
         $manager = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new TaskType($manager), $task);
+        $form = $this->createForm(new TaskType($manager), $task)
+                    ->add("save", "submit", array("label" => "New Task"));
 
-        return array("form" => $form->createView() );
+        return array("form" => $form->createView(), "categoryId" => $categoryId );
     }
 
     /**
@@ -106,7 +101,8 @@ class TaskController extends Controller
 
         $editTask->setCategory($category);
         $manager = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new TaskType($manager), $editTask);
+        $form = $this->createForm(new TaskType($manager), $editTask)
+                    ->add("save", "submit", array("label" => "Edit"));
 
         return $this->render("AppBundle:Task:editFormTask.html.twig",
                                 array("form" => $form->createView(),
@@ -125,11 +121,12 @@ class TaskController extends Controller
         $category =  $this->getDoctrine()->getRepository("AppBundle:Category")->find($categoryId);
         $editTask->setCategory($category);
         $manager = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new TaskType($manager), $editTask);
+        $form = $this->createForm(new TaskType($manager), $editTask)
+                    ->add("save", "submit", array("label" => "Edit"));
 
         $form->handleRequest($request);
         $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute("app_category_viewcategorieslist");
+        return $this->redirectToRoute("app_category_viewcategory", array("id" => $categoryId));
     }
 
     /**
