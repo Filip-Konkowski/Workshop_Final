@@ -23,7 +23,6 @@ class CategoryController extends Controller
     public function viewCategoryAction($id)
     {
         $category = $this->getDoctrine()->getRepository("AppBundle:Category")->find($id);
-//        $allTasksOfUser = $this->getDoctrine()->getRepository("AppBundle:Category")->findByCategory();
         return array("category" => $category,
         );
     }
@@ -35,7 +34,6 @@ class CategoryController extends Controller
     public function viewCategoriesListAction()
     {
         $categoriesList = $this->getDoctrine()->getRepository("AppBundle:Category")->findByUser($this->getUser());
-
         return array("categories" => $categoriesList);
     }
 
