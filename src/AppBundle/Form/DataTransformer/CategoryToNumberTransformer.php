@@ -7,23 +7,18 @@
  */
 
 namespace AppBundle\Form\DataTransformer;
-
-
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use AppBundle\Entity\Category;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-
 class CategoryToNumberTransformer implements DataTransformerInterface
 {
     private $manager;
-
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
     }
-
     /**
      * Transforms an object (category) to a string (number).
      *
@@ -35,10 +30,8 @@ class CategoryToNumberTransformer implements DataTransformerInterface
         if (null === $category) {
             return '';
         }
-
         return $category->getId();
     }
-
     /**
      * Transforms a string (number) to an object (Category).
      *
@@ -52,13 +45,11 @@ class CategoryToNumberTransformer implements DataTransformerInterface
         if (!$category) {
             return;
         }
-
         $category = $this->manager
             ->getRepository('AppBundle:Category')
             // query for the issue with this id
             ->find($category)
         ;
-
         if (null === $category) {
             // causes a validation error
             // this message is not shown to the user
@@ -68,7 +59,6 @@ class CategoryToNumberTransformer implements DataTransformerInterface
                 $category
             ));
         }
-
         return $category;
     }
 }
