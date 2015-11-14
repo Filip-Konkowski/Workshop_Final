@@ -15,12 +15,13 @@
                     <li><a href="http://localhost:8889/category/add">New Category</a></li>
                     <li><a href="http://localhost:8889/category/viewCategoriesList">View Categories</a></li>
                  </ul>
-                 <ul class="nav navbar-nav navbar-left">
+                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="http://localhost:8889/logout">Logout</a></li>
                  </ul>
              {% else %}
-                 <ul class="nav navbar-nav navbar-left">
+                 <ul class="nav navbar-nav navbar-right">
                      <li><a href="http://localhost:8889/login">Login</a></li>
+                     <li><a href="{{ path("fos_user_registration_register") }}">Register</a></li>
                  </ul>
              {% endif %}
          </div>
