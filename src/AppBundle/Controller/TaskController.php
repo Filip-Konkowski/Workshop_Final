@@ -43,7 +43,6 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-
         $validator = $this->get("validator");
         $errors = $validator->validate($task);
         if (!$form->isValid()) {
