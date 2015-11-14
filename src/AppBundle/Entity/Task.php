@@ -210,7 +210,6 @@ class Task
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
-    private $categoryId;
 
     /**
      * @ORM\OneToMany(targetEntity="Comments", mappedBy="task")
@@ -247,23 +246,6 @@ class Task
     public function getCategory()
     {
         return $this->category;
-    }
-
-    public function setCategoryId($categoryId = null)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return \AppBundle\Entity\Category
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**
