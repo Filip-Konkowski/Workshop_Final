@@ -3,11 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
+use AppBundle\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Task;
 
 /**
  * Class CommentController
@@ -17,27 +19,29 @@ use Symfony\Component\HttpFoundation\Request;
 class CommentController extends Controller
 {
     /**
-     * @Route("/viewComment")
+     * @Route("/viewComments")
      * @Template()
      */
-    public function viewCommentAction()
+    public function viewCommentsAction()
     {
         return array(// ...
         );
     }
 
     /**
-     * @Route("/add")
+     * @Route("/add/{taskId}")
      * @Template()
      */
-    public function addAction()
+    public function addAction($taskId)
     {
         $comment = new Comments();
-        $form = $this->createFormBuilder($comment)
-                        ->add("content", "text", array("label" => "Add your comment"))
-                        ->add("save", "submit", array("label" => "comment"))
-                        ->getForm();
-        return array("form" => $form->createView());
+        $task = $this->getDoctrine()->getRepository("AppBundle:Task")->find($taskId);
+        $comment->setTask($task);
+        $manager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new CommentType($manager), $comment)
+            ->add("save", "submit", array("label" => "New Comment"));
+
+        return array("form" => $form->createView(), "task" => $task);
     }
 
     /**
@@ -47,10 +51,10 @@ class CommentController extends Controller
     public function addCommentAction(Request $request)
     {
         $comment = new Comments();
-        $form = $this->createFormBuilder($comment)
-            ->add("content", "text", array("label" => "Add your comment"))
-            ->add("save", "submit", array("label" => "comment"))
-            ->getForm();
+        $manager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new CommentType($manager), $comment)
+            ->add("save", "submit", array("label" => "New Comment"));
+
         $form->handleRequest($request);
         $validator = $this->get("validator");
         $errors = $validator->validate($comment);
@@ -59,10 +63,13 @@ class CommentController extends Controller
                 array("errors" => $errors, "form" =>$form->createView())
             );
         }
+        $comment->setTask($comment->getTask());
+//        var_dump($comment->getTask());
+//        exit;
         $em = $this->getDoctrine()->getManager();
         $em->persist($comment);
         $em->flush();
-        return $this->redirectToRoute("app_comment_viewcomment");
+        return $this->redirectToRoute("app_category_viewcategorieslist");
     }
     /**
      * @Route("/delete")
