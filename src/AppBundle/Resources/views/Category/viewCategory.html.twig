@@ -51,8 +51,17 @@
                         Comment
                     </a>
                 </div>
+                <div class="pathComments col-md-3" >
+                    <br>
+                    <a class="showComment btn btn-block btn-default" id="{{ task.id }}" href="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}" data-path="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}">
+                        Show comments
+                    </a>
+                </div>
             </div>
-            <hr>
+            <br>
+            <div class="{{ task.id }} " >
+                <hr>
+            </div>
         {% endfor %}
     </div>
 </div>

@@ -8,8 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Task;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 /**
  * Class CommentController
@@ -19,15 +26,24 @@ use AppBundle\Entity\Task;
 class CommentController extends Controller
 {
     /**
-     * @Route("/viewComments")
-     * @Template()
+     * @Route("/viewComments/{taskId}")
+     *
      */
-    public function viewCommentsAction()
+    public function viewCommentsAction($taskId)
     {
-        return array(// ...
-        );
-    }
+        $commentsList = $this->getDoctrine()->getRepository("AppBundle:Comments")
+            ->findCommentsList($taskId);
 
+        if (!$commentsList) {
+            throw $this->createNotFoundException("non comments to show");
+        }
+        $serializer = $this->get('serializer');
+        $json = $serializer->serialize(
+            $commentsList,
+            'json', array('groups' => array('group1'))
+        );
+        return new Response($json);
+    }
     /**
      * @Route("/add/{taskId}")
      * @Template()
@@ -41,7 +57,10 @@ class CommentController extends Controller
         $form = $this->createForm(new CommentType($manager), $comment)
             ->add("save", "submit", array("label" => "New Comment"));
 
-        return array("form" => $form->createView(), "task" => $task);
+        $commentsList = $this->getDoctrine()->getRepository("AppBundle:Comments")->findBy(array("task" => $taskId));
+        return array("form" => $form->createView(),
+                    "task" => $task,
+                    "commentsList" => $commentsList);
     }
 
     /**
@@ -64,8 +83,6 @@ class CommentController extends Controller
             );
         }
         $comment->setTask($comment->getTask());
-//        var_dump($comment->getTask());
-//        exit;
         $em = $this->getDoctrine()->getManager();
         $em->persist($comment);
         $em->flush();

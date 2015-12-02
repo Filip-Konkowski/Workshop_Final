@@ -10,4 +10,10 @@ namespace AppBundle\Entity;
  */
 class CommentsRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findCommentsList($id) {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT c FROM AppBundle:Comments c WHERE c.task = :id ")
+                        ->setParameter("id", $id);
+        return $query->getArrayResult();
+    }
 }
