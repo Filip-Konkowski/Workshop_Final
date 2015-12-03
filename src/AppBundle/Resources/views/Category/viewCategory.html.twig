@@ -47,19 +47,20 @@
             <div class="row">
                 <div class="col-md-6">
                     <br>
-                    <a class="btn btn-block btn-default" id="buttonCategory" href="{{ path("app_comment_add", {"taskId":task.id}) }}">
+                    <a class="addComment btn btn-block btn-default" id="{{ task.id }}" href="{{ path("app_comment_add", {"taskId":task.id}) }}" data-path="{{ path("app_comment_add", {"taskId":task.id}) }}">
                         Comment
                     </a>
                 </div>
                 <div class="pathComments col-md-3" >
                     <br>
-                    <a class="showComment btn btn-block btn-default" id="{{ task.id }}" href="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}" data-path="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}">
+                    <a class="showButton btn btn-block btn-default" id="{{ task.id }}" href="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}" data-path="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}">
                         Show comments
                     </a>
                 </div>
             </div>
             <br>
-            <div class="{{ task.id }} " >
+            <div class="formComment {{ task.id }}"></div>
+            <div class="showComment {{ task.id }} " >
                 <hr>
             </div>
         {% endfor %}

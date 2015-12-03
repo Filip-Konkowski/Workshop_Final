@@ -1,17 +1,32 @@
-{% extends "::base.html.twig" %}
+{#{% extends "::base.html.twig" %}#}
 
-{% block title %}AppBundle:Task:addFormComment{% endblock %}
+{#{% block title %}AppBundle:Task:addFormComment{% endblock %}#}
 
-{% block body %}
-    <h1>Welcome to the Task: {{ task.name }}</h1>
+{#{% block body %}#}
+    <h3>Please add comment to "{{ task.name }}" task</h3>
     <div class="container">
-        {% if errors is defined %}
-            {% for error in errors %}
-                Error: {{ error.message }} <br>
-            {% endfor %}
-        {% endif %}
-        {{ form_start(form, {action: path("app_comment_addcomment"), method: "POST"}) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        <div class="row">
+            {% if errors is defined %}
+                {% for error in errors %}
+                    Error: {{ error.message }} <br>
+                {% endfor %}
+            {% endif %}
+            {{ form_start(form, {action: path("app_comment_addcomment"), method: "POST"}) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div>
+            <p><strong> Current comments </strong></p>
+        </div>
+        <div class="row">
+            <ul class="list-group">
+                {% for comment in commentsList %}
+                    <li class="list-group-item">
+                        comment: {{ comment.content }}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-{% endblock %}
+{#{% endblock %}#}
