@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Comments
@@ -26,12 +28,15 @@ class Comments
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
+     * @Assert\Length(max=255,
+     *              maxMessage = "Comment is too long")
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="Task", inversedBy="comments")
      * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
+     *
      */
     private $task;
 
