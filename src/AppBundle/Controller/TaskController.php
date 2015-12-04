@@ -56,7 +56,6 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
-//        return $this->redirectToRoute("app_category_viewcategorieslist");
         return $this->redirectToRoute("app_category_viewcategory", array("id" => $categoryId));
     }
 
@@ -72,7 +71,6 @@ class TaskController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $form = $this->createForm(new TaskType($manager), $task)
                     ->add("save", "submit", array("label" => "New Task"));
-
         return array("form" => $form->createView(), "categoryId" => $categoryId );
     }
 

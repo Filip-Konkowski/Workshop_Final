@@ -13,10 +13,11 @@
             <div class="row">
                 <div class="col-md-7">
                     <li class="list-group-item">
-                        Name of task: {{ task.name }} <br>
+                        Name of task: {{ task.name }}  <br>
                         TO DO: {{ task.description }} <br>
                         Deadline: {{ task.deadline|date("Y-m-d") }} <br>
                         Priority: {{ task.priority }}
+
                     </li>
                 </div>
                 {% if task.status is constant("STATUS_TODO", task) %}
@@ -54,7 +55,7 @@
                 <div class="pathComments col-md-3" >
                     <br>
                     <a class="showButton btn btn-block btn-default" id="{{ task.id }}" href="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}" data-path="{{ path("app_comment_viewcomments", {"taskId":task.id}) }}">
-                        Show comments
+                        Show comments <span class="badge badge-success">{{ task.comments|length }}</span>
                     </a>
                 </div>
             </div>

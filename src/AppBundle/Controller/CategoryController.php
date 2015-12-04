@@ -23,6 +23,12 @@ class CategoryController extends Controller
     public function viewCategoryAction($id)
     {
         $category = $this->getDoctrine()->getRepository("AppBundle:Category")->find($id);
+//        $tasks = $category->getTasks();
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $commentList = $em->getRepository("AppBundle:Comments")->findCommentsList(1);
+
+
         return array("category" => $category,
         );
     }

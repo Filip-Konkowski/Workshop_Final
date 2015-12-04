@@ -10,3 +10,27 @@ body {
     position: relative;
     padding: 1.5em;
 }
+
+span.badge {
+    position: relative;
+    left: 35px;
+    font-weight: bold;
+    white-space: nowrap;
+    color: #ffffff;
+    background-color: #999999;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+}
+.badge:hover {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.badge-success {
+    background-color: #468847;
+}
+.badge-success:hover {
+    background-color: #99ccff;
+}

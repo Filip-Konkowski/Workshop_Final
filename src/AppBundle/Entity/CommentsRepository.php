@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+
+
 /**
  * CommentsRepository
  *
@@ -16,4 +18,5 @@ class CommentsRepository extends \Doctrine\ORM\EntityRepository
                         ->setParameter("id", $id);
         return $query->getArrayResult();
     }
+
 }
